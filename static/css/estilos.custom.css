@@ -1,0 +1,125 @@
+/* Estilos personalizados para nuestra app de finanzas */
+
+.tarjeta-animada {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tarjeta-animada:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+}
+
+body {
+    scroll-behavior: smooth;
+}
+
+body.dark-mode {
+    background: #020817;
+    color: #e2e8f0;
+}
+
+body.dark-mode .bg-white,
+body.dark-mode .bg-slate-50,
+body.dark-mode .bg-slate-100,
+body.dark-mode .border-slate-200,
+body.dark-mode .border-slate-300,
+body.dark-mode .text-slate-800,
+body.dark-mode .text-slate-500,
+body.dark-mode .text-slate-900,
+body.dark-mode .text-slate-600,
+body.dark-mode .text-slate-400,
+body.dark-mode .text-slate-700 {
+    transition: all 0.2s ease;
+}
+
+body.dark-mode .bg-white {
+    background-color: #0f172a !important;
+}
+
+body.dark-mode .bg-slate-50 {
+    background-color: #111827 !important;
+}
+
+body.dark-mode .bg-slate-100 {
+    background-color: #1f2937 !important;
+}
+
+body.dark-mode .border-slate-200 {
+    border-color: rgba(148, 163, 184, 0.22) !important;
+}
+
+body.dark-mode .border-slate-300 {
+    border-color: rgba(148, 163, 184, 0.35) !important;
+}
+
+body.dark-mode .text-slate-900,
+body.dark-mode .text-slate-800,
+body.dark-mode .text-slate-700,
+body.dark-mode .text-slate-600,
+body.dark-mode .text-slate-500,
+body.dark-mode .text-slate-400 {
+    color: #e2e8f0 !important;
+}
+
+body.dark-mode .text-slate-400 {
+    color: #94a3b8 !important;
+}
+
+body.dark-mode .bg-indigo-50,
+body.dark-mode .bg-emerald-50,
+body.dark-mode .bg-rose-50,
+body.dark-mode .bg-violet-50,
+body.dark-mode .bg-indigo-100,
+body.dark-mode .bg-slate-200 {
+    background-color: rgba(99, 102, 241, 0.12) !important;
+}
+
+body.dark-mode .text-indigo-600,
+body.dark-mode .text-emerald-600,
+body.dark-mode .text-rose-600,
+body.dark-mode .text-violet-600 {
+    color: #c4b5fd !important;
+}
+
+body.dark-mode input,
+body.dark-mode select,
+body.dark-mode button {
+    transition: all 0.2s ease;
+}
+
+body.dark-mode input,
+body.dark-mode select {
+    background-color: rgba(15, 23, 42, 0.9) !important;
+    color: #e2e8f0 !important;
+    border-color: rgba(148, 163, 184, 0.35) !important;
+}
+
+body.dark-mode .account-card {
+    box-shadow: 0 18px 35px rgba(79, 70, 229, 0.35);
+}
+
+body.dark-mode .crud-panel {
+    background: rgba(15, 23, 42, 0.55);
+    border-radius: 1rem;
+}
+
+.crud-panel {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease, opacity 0.25s ease, margin-top 0.25s ease;
+}
+
+.crud-panel.is-open {
+    max-height: 800px;
+    opacity: 1;
+    margin-top: 0.75rem;
+}
+
+[data-card-toggle] {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+[data-card-toggle]:hover {
+    transform: translateY(-1px);
+}

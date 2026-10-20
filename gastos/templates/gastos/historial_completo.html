@@ -1,0 +1,155 @@
+{% load static finanzas_filters %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historial completo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{% static 'css/estilos.custom.css' %}">
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased transition-colors duration-300">
+    <nav class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center gap-3">
+                    <a href="{% url 'resumen' %}?mes_filtro={{ mes_filtro }}&anio_filtro={{ anio_filtro }}" class="text-sm font-medium text-slate-600 hover:text-slate-900">← Volver al resumen</a>
+                </div>
+                <button id="themeToggle" type="button" class="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-slate-200 bg-slate-100 text-slate-700 text-sm font-medium hover:bg-slate-200 transition-colors">
+                    🌙 Modo oscuro
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+            <div>
+                <p class="text-sm font-semibold uppercase tracking-wider text-indigo-600">Historial completo</p>
+                <h1 class="text-3xl font-extrabold text-slate-950 mt-1">Movimientos del mes</h1>
+            </div>
+            <div class="rounded-2xl border border-slate-200 bg-white px-4 py-3 shadow-xs">
+                <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Periodo</span>
+                <p class="text-lg font-bold text-slate-900 mt-1">
+                    {% for m in meses_lista %}{% if m.numero == mes_filtro %}{{ m.nombre }}{% endif %}{% endfor %} {{ anio_filtro }}
+                </p>
+            </div>
+        </div>
+
+        <div class="bg-white border border-slate-200 rounded-2xl shadow-xs p-5 mb-8">
+            <form method="GET" class="grid grid-cols-1 md:grid-cols-5 gap-3 items-end">
+                <div class="md:col-span-1">
+                    <label for="mes_filtro" class="block text-[10px] font-semibold uppercase tracking-wider text-slate-500 mb-1">Mes</label>
+                    <select name="mes_filtro" id="mes_filtro" class="w-full px-3 py-2 border border-slate-300 rounded-xl bg-white text-sm text-slate-800 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
+                        {% for m in meses_lista %}
+                            <option value="{{ m.numero }}" {% if m.numero == mes_filtro %}selected{% endif %}>{{ m.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="md:col-span-1">
+                    <label for="anio_filtro" class="block text-[10px] font-semibold uppercase tracking-wider text-slate-500 mb-1">Año</label>
+                    <select name="anio_filtro" id="anio_filtro" class="w-full px-3 py-2 border border-slate-300 rounded-xl bg-white text-sm text-slate-800 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
+                        {% for a in anios_lista %}
+                            <option value="{{ a }}" {% if a == anio_filtro %}selected{% endif %}>{{ a }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="md:col-span-1">
+                    <label for="q" class="block text-[10px] font-semibold uppercase tracking-wider text-slate-500 mb-1">Buscar</label>
+                    <input type="text" id="q" name="q" value="{{ q }}" placeholder="Concepto o categoría" class="w-full px-3 py-2 border border-slate-300 rounded-xl bg-white text-sm text-slate-800 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
+                </div>
+
+                <div class="md:col-span-1">
+                    <label for="monto_min" class="block text-[10px] font-semibold uppercase tracking-wider text-slate-500 mb-1">Mínimo</label>
+                    <input type="number" id="monto_min" name="monto_min" value="{{ monto_min }}" step="0.01" placeholder="0.00" class="w-full px-3 py-2 border border-slate-300 rounded-xl bg-white text-sm text-slate-800 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
+                </div>
+
+                <div class="md:col-span-1">
+                    <label for="monto_max" class="block text-[10px] font-semibold uppercase tracking-wider text-slate-500 mb-1">Máximo</label>
+                    <input type="number" id="monto_max" name="monto_max" value="{{ monto_max }}" step="0.01" placeholder="9999.99" class="w-full px-3 py-2 border border-slate-300 rounded-xl bg-white text-sm text-slate-800 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
+                </div>
+
+                <div class="md:col-start-2 md:col-span-3 flex flex-wrap items-center gap-2 mt-1">
+                    <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-4 py-2 rounded-xl transition-colors">
+                        Aplicar filtros
+                    </button>
+                    <a href="?mes_filtro={{ mes_filtro }}&anio_filtro={{ anio_filtro }}" class="text-sm text-slate-500 hover:text-slate-700 underline">Limpiar</a>
+                </div>
+            </form>
+        </div>
+
+        <div class="bg-white border border-slate-200 rounded-2xl shadow-xs overflow-hidden">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-slate-50">
+                <h2 class="text-lg font-bold text-slate-900">Detalle de gastos</h2>
+                <span class="text-sm font-semibold text-rose-600">Total: {{ total_gastos|formato_monto }}</span>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-slate-200">
+                    <thead class="bg-slate-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-[10px] font-semibold uppercase tracking-wider text-slate-500">Fecha</th>
+                            <th class="px-6 py-3 text-left text-[10px] font-semibold uppercase tracking-wider text-slate-500">Concepto</th>
+                            <th class="px-6 py-3 text-left text-[10px] font-semibold uppercase tracking-wider text-slate-500">Categoría</th>
+                            <th class="px-6 py-3 text-left text-[10px] font-semibold uppercase tracking-wider text-slate-500">Cuenta</th>
+                            <th class="px-6 py-3 text-right text-[10px] font-semibold uppercase tracking-wider text-slate-500">Monto</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200">
+                        {% for gasto in gastos %}
+                            <tr class="hover:bg-slate-50 transition-colors">
+                                <td class="px-6 py-4 text-sm text-slate-600">{{ gasto.fecha|date:'d M Y' }}</td>
+                                <td class="px-6 py-4 text-sm font-medium text-slate-800">{{ gasto.concepto }}</td>
+                                <td class="px-6 py-4 text-sm text-slate-600">{{ gasto.categoria.nombre }}</td>
+                                <td class="px-6 py-4 text-sm text-slate-600">{{ gasto.cuenta.nombre|default:'Sin cuenta' }}</td>
+                                <td class="px-6 py-4 text-right text-sm font-bold text-rose-600">-{{ gasto.monto|formato_monto }}</td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="5" class="px-6 py-10 text-center text-sm text-slate-400">
+                                    No hay movimientos para este periodo o filtros.
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            {% if page_obj.paginator.num_pages > 1 %}
+                <div class="flex items-center justify-between gap-3 px-6 py-4 border-t border-slate-200 bg-slate-50">
+                    <a href="?mes_filtro={{ mes_filtro }}&anio_filtro={{ anio_filtro }}&q={{ q }}&monto_min={{ monto_min }}&monto_max={{ monto_max }}&page={{ page_obj.previous_page_number }}" class="px-3 py-2 rounded-xl text-xs font-medium border border-slate-300 {% if not page_obj.has_previous %}pointer-events-none opacity-40{% endif %}">
+                        Anterior
+                    </a>
+                    <span class="text-xs text-slate-500">Página {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+                    <a href="?mes_filtro={{ mes_filtro }}&anio_filtro={{ anio_filtro }}&q={{ q }}&monto_min={{ monto_min }}&monto_max={{ monto_max }}&page={{ page_obj.next_page_number }}" class="px-3 py-2 rounded-xl text-xs font-medium border border-slate-300 {% if not page_obj.has_next %}pointer-events-none opacity-40{% endif %}">
+                        Siguiente
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </main>
+
+    <script>
+        const body = document.body;
+        const themeToggle = document.getElementById('themeToggle');
+        const savedTheme = localStorage.getItem('finanzas-theme');
+
+        if (savedTheme === 'dark') {
+            body.classList.add('dark-mode');
+            if (themeToggle) {
+                themeToggle.textContent = '☀️ Modo claro';
+            }
+        }
+
+        if (themeToggle) {
+            themeToggle.addEventListener('click', function () {
+                const isDark = body.classList.toggle('dark-mode');
+                localStorage.setItem('finanzas-theme', isDark ? 'dark' : 'light');
+                themeToggle.textContent = isDark ? '☀️ Modo claro' : '🌙 Modo oscuro';
+            });
+        }
+    </script>
+</body>
+</html>
