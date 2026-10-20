@@ -321,8 +321,13 @@
                                             </div>
 
                                             <div class="w-full h-2.5 bg-slate-200 rounded-full overflow-hidden">
-                                                <div class="h-full rounded-full transition-all duration-300 {% if categoria.estado == 'excedido' %}bg-red-500{% elif categoria.estado == 'alerta' %}bg-amber-500{% else %}bg-emerald-500{% endif %}"
-                                                     style="width: {{ categoria.porcentaje }}%"></div>
+                                                {% if categoria.estado == 'excedido' %}
+                                                    <div class="h-full rounded-full transition-all duration-300 bg-red-500" data-width="{{ categoria.porcentaje }}"></div>
+                                                {% elif categoria.estado == 'alerta' %}
+                                                    <div class="h-full rounded-full transition-all duration-300 bg-amber-500" data-width="{{ categoria.porcentaje }}"></div>
+                                                {% else %}
+                                                    <div class="h-full rounded-full transition-all duration-300 bg-emerald-500" data-width="{{ categoria.porcentaje }}"></div>
+                                                {% endif %}
                                             </div>
 
                                             {% if categoria.estado == 'excedido' %}
@@ -366,7 +371,13 @@
                                         </div>
 
                                         <div class="w-full h-2.5 bg-slate-200 rounded-full overflow-hidden mb-2">
-                                            <div class="h-full rounded-full {% if porcentaje >= 100 %}bg-emerald-500{% elif porcentaje >= 80 %}bg-amber-500{% else %}bg-violet-500{% endif %}" style="width: {{ porcentaje }}%"></div>
+                                            {% if porcentaje >= 100 %}
+                                                <div class="h-full rounded-full bg-emerald-500" data-width="{{ porcentaje }}"></div>
+                                            {% elif porcentaje >= 80 %}
+                                                <div class="h-full rounded-full bg-amber-500" data-width="{{ porcentaje }}"></div>
+                                            {% else %}
+                                                <div class="h-full rounded-full bg-violet-500" data-width="{{ porcentaje }}"></div>
+                                            {% endif %}
                                         </div>
 
                                         <div class="flex justify-between text-[11px] text-slate-500">
@@ -514,6 +525,11 @@
                 themeToggle.textContent = isDark ? '☀️ Modo claro' : '🌙 Modo oscuro';
             });
         }
+
+        document.querySelectorAll('[data-width]').forEach(function (bar) {
+            const width = Number(bar.dataset.width || 0);
+            bar.style.width = width + '%';
+        });
 
         document.querySelectorAll('[data-card-toggle]').forEach(function (card) {
             card.addEventListener('click', function (event) {

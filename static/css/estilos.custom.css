@@ -123,3 +123,11 @@ body.dark-mode .crud-panel {
 [data-card-toggle]:hover {
     transform: translateY(-1px);
 }
+
+[data-width] {
+    display: block;
+    height: 100%;
+    border-radius: 9999px;
+    transition: width 0.35s ease, opacity 0.2s ease;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1);
+}
